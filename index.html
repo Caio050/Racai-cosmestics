@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RaCai Cosméticos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html"><div class="logo"><img src="logo.jpg" alt="RaCai Logo" /></div></a>
+    <nav class="nav">
+      <a href="index.html?categoria=Cabelos">Cabelos</a>
+      <a href="index.html?categoria=Maquiagem">Maquiagem</a>
+      <a href="index.html?categoria=Perfumes">Perfumes</a>
+      <a href="index.html?categoria=Skincare">Skincare</a>
+      <a href="index.html?categoria=Acessórios">Acessórios</a>
+      <a href="login.html">Login</a>
+      <a href="#" id="carrinho-icon">🛒 Minha Sacola (<span id="contador-carrinho">0</span>)</a> </nav>
+  </header>
+
+  <section class="carousel">
+    <div class="carousel-container">
+      <img src="a6d0b917-8bef-40f8-867b-edd1aa985b8b.png" alt="Produto 1" class="carousel-item active">
+      <img src="WhatsApp Image 2025-06-10 at 20.16.14.jpeg" alt="Produto 2" class="carousel-item">
+      <img src="WhatsApp Image 2025-06-10 at 20.21.07.jpeg" alt="Produto 3" class="carousel-item">
+    </div>
+    <div class="carousel-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <h2 id="produtos-titulo">Produtos em Destaque</h2>
+  <section class="produtos">
+    <div id="produtos-lista" class="produtos-grid"></div>
+  </section>
+
+  <section id="sacola-popup" class="sacola-popup">
+    <div class="sacola-conteudo">
+      <span class="fechar-sacola" id="fechar-sacola">&times;</span>
+      <h2>Minha Sacola</h2>
+      <div id="itens-sacola">
+        <p>Sua sacola está vazia.</p>
+      </div>
+      <p class="total-sacola">Total: <span id="valor-total-sacola">R$ 0.00</span></p>
+      <button id="finalizar-compra-btn" class="finalizar-compra-btn" disabled>Comprar via WhatsApp</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 RaCai Cosméticos. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="java.js"></script>
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>

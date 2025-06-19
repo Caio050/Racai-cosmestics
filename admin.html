@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - RaCai Cosméticos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><img src="logo.jpg" alt="RaCai Logo" /></div>
+    <h1>Painel Administrativo</h1>
+    <a href="index.html">Sair</a>
+  </header>
+
+  <main class="admin-container">
+    <section class="add-product">
+      <h2>Adicionar Produto</h2>
+      <form id="product-form">
+        <input type="text" id="nome" placeholder="Nome do Produto" required>
+        <input type="text" id="descricao" placeholder="Descrição">
+<input type="number" id="preco" placeholder="Preço" required step="0.01" min="0">
+        
+        <!-- Campo de categoria como seleção -->
+        <select id="categoria" required>
+          <option value="" disabled selected>Selecione a Categoria</option>
+          <option value="Maquiagem">Maquiagem</option>
+          <option value="Cabelos">Cabelos</option>
+          <option value="Skincare">Skincare</option>
+          <option value="Perfumes">Perfumes</option>
+          <option value="Acessórios">Acessórios</option>
+        </select>
+
+        <input type="text" id="imagem" placeholder="URL da Imagem" required>
+        <button type="submit">Adicionar</button>
+      </form>
+    </section>
+
+ <h2>Produtos Cadastrados</h2>
+
+    <section class="produtos">
+     
+      <div id="produtos-container" class="produtos-grid"></div>
+    </section>
+  </main>
+
+  
+
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAh8-5VoJV-0HIG1aVLbdk8tm9CZrCBTfk",
+    authDomain: "racai-variedades.firebaseapp.com",
+    projectId: "racai-variedades",
+    storageBucket: "racai-variedades.firebasestorage.app",
+    messagingSenderId: "18722161117",
+    appId: "1:18722161117:web:c845210bb372cf9e533634",
+    measurementId: "G-NF1NHBG6JT"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const produtosRef = collection(db, "produtos");
+
+  const form = document.getElementById('product-form');
+  const container = document.getElementById('produtos-container');
+
+  let editandoId = null;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value;
+    const descricao = document.getElementById('descricao').value;
+    const preco = parseFloat(document.getElementById('preco').value.replace(',', '.'));
+    const categoria = document.getElementById('categoria').value;
+    const imagem = document.getElementById('imagem').value;
+
+    try {
+      if (editandoId) {
+        const ref = doc(db, "produtos", editandoId);
+        await updateDoc(ref, { nome, descricao, preco, categoria, imagem });
+        alert("Produto editado com sucesso!");
+        editandoId = null;
+        form.querySelector("button").textContent = "Adicionar";
+      } else {
+        await addDoc(produtosRef, { nome, descricao, preco, categoria, imagem });
+        alert("Produto cadastrado com sucesso!");
+      }
+
+      form.reset();
+      carregarProdutos();
+
+    } catch (erro) {
+      console.error("Erro ao salvar:", erro);
+      alert("Erro ao salvar no Firebase. Veja o console.");
+    }
+  });
+
+  async function carregarProdutos() {
+    const snapshot = await getDocs(produtosRef);
+    container.innerHTML = "";
+
+    snapshot.forEach(docSnap => {
+      const p = docSnap.data();
+      const id = docSnap.id;
+      const div = document.createElement("div");
+      div.classList.add("produto");
+      div.innerHTML = `
+        <img src="${p.imagem}" alt="${p.nome}" width="100"><br>
+        <strong>${p.nome}</strong><br>
+        ${p.descricao}<br>
+        <strong>R$ ${p.preco.toFixed(2)}</strong><br>
+        Categoria: ${p.categoria}<br>
+        <button onclick="editarProduto('${id}')">Editar</button>
+        <button onclick="excluirProduto('${id}')">Excluir</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  window.excluirProduto = async function(id) {
+    if (confirm("Tem certeza que deseja excluir este produto?")) {
+      await deleteDoc(doc(db, "produtos", id));
+      carregarProdutos();
+    }
+  };
+
+  window.editarProduto = async function(id) {
+    const ref = doc(db, "produtos", id);
+    const snap = await getDocs(produtosRef);
+    const allDocs = {};
+    snap.forEach(d => allDocs[d.id] = d.data());
+    const p = allDocs[id];
+
+    document.getElementById('nome').value = p.nome;
+    document.getElementById('descricao').value = p.descricao;
+    document.getElementById('preco').value = p.preco;
+    document.getElementById('categoria').value = p.categoria;
+    document.getElementById('imagem').value = p.imagem;
+    editandoId = id;
+    form.querySelector("button").textContent = "Salvar Alterações";
+  };
+
+  carregarProdutos();
+</script>
+
+
+
+
+</body>
+</html>

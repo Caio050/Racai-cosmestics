@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html"><div class="logo"><img src="logo.jpg" alt="RaCai Logo" /></div></a>
+    <nav class="nav">
+      <a href="#">Tratamentos</a>
+      <a href="#">Maquiagem</a>
+      <a href="#">Perfumes</a>
+      <a href="#">Contato</a>
+      <a href="">Acessórios</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+
+  <div class="formulario-container">
+    <form id="cadastro-form">
+      <input type="text" id="nome" placeholder="Nome" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="senha" placeholder="Senha" required minlength="6" />
+      <input type="text" id="endereco" placeholder="Endereço" required />
+      <input type="text" id="cep" placeholder="CEP (somente números)" pattern="[0-9]{8}" required />
+      <button type="submit">Cadastrar</button>
+    </form>
+  </div>
+
+  <script type="module">
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAh8-5VoJV-0HIG1aVLbdk8tm9CZrCBTfk",
+  authDomain: "racai-variedades.firebaseapp.com",
+  projectId: "racai-variedades",
+  storageBucket: "racai-variedades.firebasestorage.app",
+  messagingSenderId: "18722161117",
+  appId: "1:18722161117:web:c845210bb372cf9e533634",
+  measurementId: "G-NF1NHBG6JT"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const form = document.getElementById("cadastro-form");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const endereco = document.getElementById("endereco").value;
+  const cep = document.getElementById("cep").value;
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, senha);
+    const uid = cred.user.uid;
+
+    await setDoc(doc(db, "usuarios", uid), {
+      nome,
+      email,
+      endereco,
+      cep,
+      isAdmin: false   
+    });
+
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "index.html";
+  } catch (err) {
+    alert("Erro ao cadastrar: " + err.message);
+  }
+});
+
+
+  </script>
+
+</body>
+</html>
