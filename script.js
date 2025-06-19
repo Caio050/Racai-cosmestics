@@ -130,7 +130,7 @@ finalizarCompraBtn.addEventListener('click', () => {
     let mensagem = `Olá, ${nomeLoja}! Escolhi os seguintes produtos:\n\n`;
     let valorTotal = 0;
 
-    const telefoneLoja = "5511937390141"; // Seu número de telefone
+    const telefoneLoja = "5511937390141"; 
 
     sacola.forEach(item => {
         mensagem += `- ${item.nome} (Qtd: ${item.quantidade}) - R$ ${(item.preco * item.quantidade).toFixed(2)}\n`;
@@ -154,7 +154,7 @@ finalizarCompraBtn.addEventListener('click', () => {
 // FIM DAS NOVAS ADIÇÕES PARA CARRINHO E WHATSAPP
 
 
-// OUVINTE DE ESTADO DE AUTENTICAÇÃO DO FIREBASE
+// autenticação de login
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // Usuário está logado
