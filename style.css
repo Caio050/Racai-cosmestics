@@ -42,45 +42,49 @@ nav a:hover{
 
 /* formularios */
 form {
-  max-width: 500px;
-  margin: 70px auto;
-  padding: 2rem;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  max-width: 500px;
-  margin-bottom: 40px;
+ max-width: 500px;
+ margin: 70px auto;
+ padding: 2rem;
+ background: white;
+ padding: 20px;
+ border-radius: 12px;
+ box-shadow: 0 0 10px rgba(0,0,0,0.1);
+ max-width: 500px;
+ margin-bottom: 40px;
 }
 
 form input {
-  display: flex;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+ display: flex;
+ width: 100%;
+ padding: 10px;
+ margin: 10px 0;
+ border: 1px solid #ccc;
+ border-radius: 6px;
 }
 
 form button {
-  padding: 10px 20px;
-  background-color: #d46a92;
-  border: none;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
+padding: 10px 20px;
+background-color: #d46a92;
+border: none;
+color: white;
+font-weight: bold;
+border-radius: 6px;
+cursor: pointer;
 }
+
+/* Alteração aqui: para o link "Esqueci a senha" */
 form a {
-  text-decoration: none;
-  color: #333;
-  display: block;
-  right: auto;
-  justify-content: right;
+ text-decoration: none;
+ color: #333;
+ display: block; /* Garante que ele ocupe sua própria linha */
+ text-align: right; /* Alinha o texto à direita */
+ margin-top: -5px; /* Ajusta a margem para ficar mais próximo do campo de e-mail */
+ margin-bottom: 10px; /* Adiciona um pequeno espaço abaixo dele */
 }
+
 h2 {
-  color: #d46a92;
-  text-align: center
+ color: #d46a92;
+ text-align: center
 }
 
 /* carrossel sendo adicionado */
@@ -238,28 +242,28 @@ select {
   background-color: #e91e63;
 }
 .produto img {
-  width: 110px; /* deixa a imagem pequena igual antes */
+  width: 110px; 
   border-radius: 8px;
 }
 
 /* adicionando a sacola  */
 /* Estilos para o popup da sacola */
 .sacola-popup {
-  display: none; /* Escondido por padrão */
-  position: fixed; /* Fixado na tela */
-  z-index: 1000; /* Acima de outros elementos */
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Adiciona scroll se o conteúdo for grande */
-  background-color: rgba(0,0,0,0.6); /* Fundo semi-transparente */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.6); 
+  justify-content: center; 
+  align-items: center; 
 }
 
 .sacola-popup.ativo {
-  display: flex; /* Mostra o popup quando a classe 'ativo' é adicionada */
+  display: flex; 
 }
 
 .sacola-conteudo {
@@ -299,8 +303,8 @@ select {
 #itens-sacola {
   margin-top: 20px;
   margin-bottom: 20px;
-  max-height: 300px; /* Limita a altura para scroll */
-  overflow-y: auto; /* Adiciona scroll vertical */
+  max-height: 300px; 
+  overflow-y: auto; 
 }
 
 .item-carrinho {
@@ -312,8 +316,7 @@ select {
 }
 
 .item-carrinho:last-child {
-  border-bottom: none; /* Remove a borda do último item */
-}
+  border-bottom: none; 
 
 .item-carrinho img {
   width: 60px;
@@ -322,7 +325,7 @@ select {
   border-radius: 5px;
   margin-right: 15px;
 }
-
+}
 .item-info {
   flex-grow: 1;
 }
@@ -340,7 +343,7 @@ select {
 }
 
 .remover-item-btn {
-  background-color: #ff4d4d; /* Vermelho para remover */
+  background-color: #ff4d4d; 
   color: white;
   border: none;
   border-radius: 5px;
@@ -366,7 +369,7 @@ select {
   display: block;
   width: 100%;
   padding: 15px;
-  background-color: #4CAF50; /* Verde para comprar */
+  background-color: #4CAF50; 
   color: white;
   border: none;
   border-radius: 8px;
