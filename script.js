@@ -25,40 +25,10 @@ const produtosTitulo = document.getElementById('produtos-titulo');
 let usuarioLogado = null;
 
 // Referência ao link de login/logout na navegação
+
 const loginLogoutLink = document.querySelector('nav a[href="login.html"]');
 
-// **NOVA ADIÇÃO: Link para "Esqueci a Senha"**
-const forgotPasswordLink = document.getElementById('forgot-password-link'); // Seleciona o novo ID
 
-if (forgotPasswordLink) { // Verifica se o elemento existe antes de adicionar o listener
-    forgotPasswordLink.addEventListener('click', async (e) => {
-        e.preventDefault(); // Impede o comportamento padrão do link
-
-        const email = prompt("Por favor, digite seu e-mail para redefinir a senha:");
-
-        if (email) {
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert("Um e-mail de redefinição de senha foi enviado para " + email + ". Por favor, verifique sua caixa de entrada.");
-            } catch (error) {
-                console.error("Erro ao enviar e-mail de redefinição de senha:", error.message);
-                
-                let errorMessage = "Ocorreu um erro ao enviar o e-mail de redefinição de senha. Por favor, tente novamente.";
-                if (error.code === 'auth/invalid-email') {
-                    errorMessage = "O endereço de e-mail fornecido é inválido.";
-                } else if (error.code === 'auth/user-not-found') {
-                    errorMessage = "Não há usuário registrado com este e-mail.";
-                }
-                alert(errorMessage);
-            }
-        } else {
-            alert("Operação cancelada. Nenhum e-mail foi fornecido.");
-        }
-    });
-}
-
-
-// da sacola para o WHATSAPP
 const sacolaPopup = document.getElementById('sacola-popup');
 const fecharSacolaBtn = document.getElementById('fechar-sacola');
 const itensSacolaDiv = document.getElementById('itens-sacola');

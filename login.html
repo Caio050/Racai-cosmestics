@@ -1,105 +1,125 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - RaCai</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - RaCai</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header class="header">
-    <a href="index.html"><div class="logo"><img src="logo.jpg" alt="RaCai Logo" /></div></a>
-    <nav class="nav">
-      <a href="#">Tratamentos</a>
-      <a href="#">Maquiagem</a>
-      <a href="#">Perfumes</a>
-      <a href="#">Contato</a>
-      <a href="">Acessórios</a>
-      <a href="login.html">Login</a>
-    </nav>
-  </header>
+<header class="header">
+<a href="index.html"><div class="logo"><img src="logo.jpg" alt="RaCai Logo" /></div></a>
+<nav class="nav">
+<a href="#">Tratamentos</a>
+<a href="#">Maquiagem</a>
+<a href="#">Perfumes</a>
+<a href="#">Contato</a>
+<a href="">Acessórios</a>
+<a href="login.html">Login</a>
+ </nav>
+ </header>
+
+
+ <main>
+ <h2>Login</h2>
+
+ <form id="login-form" class="formulario-container">
+ 
+ <label for="email">Email:</label><br />
+<input type="email" id="email" placeholder="Email" required /><br />
+
+<a href="#" id="forgot-password-link">Esqueci a senha</a>
+
+<label for="senha">Senha:</label><br />
+<input type="password" id="senha" placeholder="Senha" required /><br />
+
+<button type="submit">Entrar</button>
+<p><a href="cadastro.html">Cadastre-se</a></p>
+
+</form>
+
+</main>
+
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"; 
     
 
+    const firebaseConfig = {
+        apiKey: "AIzaSyAh8-5VoJV-0HIG1aVLbdk8tm9CZrCBTfk",
+        authDomain: "racai-variedades.firebaseapp.com",
+        projectId: "racai-variedades",
+        storageBucket: "racai-variedades.firebasestorage.app",
+        messagingSenderId: "18722161117",
+        appId: "1:18722161117:web:c845210bb372cf9e533634",
+        measurementId: "G-NF1NHBG6JT"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  <main>
-    <h2>Login</h2>
+    const form = document.getElementById("login-form");
+    const forgotPasswordLink = document.getElementById('forgot-password-link'); // Seleciona o link "Esqueci a senha"
 
-    <form id="login-form" class="formulario-container">
-      
-      <label for="email">Email:</label><br />
-      <input type="email" id="email" placeholder="Email" required /><br />
+    // Listener para o formulário de login
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-       <a href="#" id="forgot-password-link">Esqueci a senha</a>
+        const email = document.getElementById("email").value;
+        const senha = document.getElementById("senha").value;
+        
+        try {
+            const cred = await signInWithEmailAndPassword(auth, email, senha);
+            const uid = cred.user.uid;
 
-      <label for="senha">Senha:</label><br />
-      <input type="password" id="senha" placeholder="Senha" required /><br />
+            const docRef = doc(db, "usuarios", uid);
+            const docSnap = await getDoc(docRef);
 
-      <button type="submit">Entrar</button>
-      <p><a href="cadastro.html">Cadastre-se</a></p>
+            if (!docSnap.exists()) {
+                alert("Usuário autenticado, mas não cadastrado corretamente no Firestore.");
+                return;
+            }
 
-    </form>
+            const dados = docSnap.data();
+            if (dados.isAdmin === true) {
+                window.location.href = "admin.html";
+            } else {
+                window.location.href = "index.html";
+            }
+        } catch (err) {
+            alert("Erro ao fazer login: " + err.message);
+        }
+    });
 
-  </main>
+    // Listener para o link "Esqueci a senha"
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', async (e) => {
+            e.preventDefault(); // Impede o comportamento padrão do link
 
-  <script type="module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+            const email = prompt("Por favor, digite seu e-mail para redefinir a senha:");
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAh8-5VoJV-0HIG1aVLbdk8tm9CZrCBTfk",
-  authDomain: "racai-variedades.firebaseapp.com",
-  projectId: "racai-variedades",
-  storageBucket: "racai-variedades.firebasestorage.app",
-  messagingSenderId: "18722161117",
-  appId: "1:18722161117:web:c845210bb372cf9e533634",
-  measurementId: "G-NF1NHBG6JT"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-const form = document.getElementById("login-form");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
-
-  try {
-    const cred = await signInWithEmailAndPassword(auth, email, senha);
-    const uid = cred.user.uid;
-
-    const docRef = doc(db, "usuarios", uid);
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) {
-      alert("Usuário autenticado, mas não cadastrado corretamente no Firestore.");
-      return;
+            if (email) {
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    alert("Um e-mail de redefinição de senha foi enviado para " + email + ". Por favor, verifique sua caixa de entrada.");
+                } catch (error) {
+                    console.error("Erro ao enviar e-mail de redefinição de senha:", error.message);
+                    let errorMessage = "Ocorreu um erro ao enviar o e-mail de redefinição de senha. Por favor, tente novamente.";
+                    if (error.code === 'auth/invalid-email') {
+                        errorMessage = "O endereço de e-mail fornecido é inválido.";
+                    } else if (error.code === 'auth/user-not-found') {
+                        errorMessage = "Não há usuário registrado com este e-mail.";
+                    }
+                    alert(errorMessage);
+                }
+            } else {
+                alert("Operação cancelada. Nenhum e-mail foi fornecido.");
+            }
+        });
     }
-
-    const dados = docSnap.data();
-    if (dados.isAdmin === true) {
-      window.location.href = "admin.html";
-    } else {
-      window.location.href = "index.html";
-    }
-  } catch (err) {
-    alert("Erro ao fazer login: " + err.message);
-  }
-});
-await setDoc(doc(db, "usuarios", uid), {
-  nome,
-  email,
-  endereco,
-  cep,
-  isAdmin: false // ou false, se for cliente
-});
-  </script>
-
+</script>
 </body>
-</html>
+ </html>
